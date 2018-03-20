@@ -1,8 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Img from './movieBox/image.js';
 
-
-const ItemSection = ({src, movieTitle, movieDate, linkToMovie})=>(
+const ItemSection = ({movieTitle, movieDate, linkToMovie})=>(
     <article className="col-md-2">
         <a href={linkToMovie} className="grid-item">
             <Img/>
@@ -13,6 +13,12 @@ const ItemSection = ({src, movieTitle, movieDate, linkToMovie})=>(
         </a>
     </article>
 )
+
+ItemSection.propTypes = {
+  movieTitle: PropTypes.string.isRequired,
+  movieDate: PropTypes.string.isRequired,
+  linkToMovie: PropTypes.string.isRequired
+};
 
 ItemSection.defaultProps = {
   movieDate: '0/00/00',

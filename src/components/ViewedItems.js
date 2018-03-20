@@ -20,8 +20,8 @@ class ViewedItems extends Component {
   render() {
     return (
       <div className="row">
-        {viewed.map(movie =>(
-          <MovieBox/>
+        {viewed.map( (movie, i) =>(
+          <MovieBox key={i} title={movie.name}/>
         ))}
       </div>
     );
