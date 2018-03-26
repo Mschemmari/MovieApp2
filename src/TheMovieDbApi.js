@@ -9,7 +9,7 @@ class TheMovieDbApi {
      params: {
        api_key: API_KEY,
        language: 'es-AR',
-         },
+        },
     })
   }
 
@@ -18,7 +18,13 @@ class TheMovieDbApi {
        params: {page: page}
      })
   )
-
+  getDiscover = (sort_by) => (
+     this.axios.get(`/discover/movie`, {
+       params: {
+         sort_by: sort_by
+       }
+     })
+  )
   getPopularSeries = (page = 1) => (
      this.axios.get(`/tv/popular`, {
        params: {page: page}

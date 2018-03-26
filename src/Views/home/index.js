@@ -3,7 +3,9 @@ import TheMovieDbApi from '../../TheMovieDbApi.js'
 import {Link} from 'react-router-dom'
 //components
 import ItemSection from '../../components/itemSection.js'
-import Section from './section.js'
+import Section from '../section.js'
+//views
+import GlobalContainer from '../Container.js'
 
 
 
@@ -13,7 +15,8 @@ class Home extends Component {
     this.api = new TheMovieDbApi()
     this.state = {
       movies: [],
-      series: []
+      series: [],
+      loading: true
     };
   }
   componentDidMount() {
@@ -22,6 +25,7 @@ class Home extends Component {
       const movies = res.data.results
       this.setState({
         movies: [...movies, this.state.movies],
+        loading: false
       });
     })
     this.api.getPopularSeries().then(res => {
@@ -29,48 +33,77 @@ class Home extends Component {
       const series = res.data.results
       this.setState({
         series: [...series, this.state.movies],
+        loading: false
       });
     })
   }
+
   render() {
+    const loading =  this.state.loading
     this.state.movies.pop()
     this.state.series.pop()
     return (
-      <main role="main">
-        <div className="py-5 bg-light">
-          <div className="container">
-            <Section sectionTitle="Mi lista ">
-              {this.state.movies.map(movie => (
-                <ItemSection
-                  movieTitle={movie.title}
-                  src={'https://image.tmdb.org/t/p/w500'+movie.poster_path}
-                  movieDate={movie.release_date}
-                />
-              ))}
-            </Section>
-            <Section sectionTitle="Series más Populares ">
-              {this.state.series.map(serie => (
-                <ItemSection
-                  movieTitle={serie.original_name}
-                  src={'https://image.tmdb.org/t/p/w500'+serie.poster_path}
-                  movieDate={serie.first_air_date}
-                />
-              ))}
-            </Section>
+      <GlobalContainer>
             <Section sectionTitle="Películas más Populares ">
-              {this.state.movies.map(movie => (
-                <ItemSection
-                  movieTitle={movie.title}
-                  src={'https://image.tmdb.org/t/p/w500'+movie.poster_path}
-                  movieDate={movie.release_date}
-                />
-              ))}
+              { loading === true ? (
+                  <div className="dimmer">
+                      <div className="loading">
+                          <i className="mdi mdi-loading" aria-hidden="true"></i>
+                      </div>
+                  </div>
+                  ) : (
+                    this.state.movies.map( (movie, i) => {
+                      if (i < 6) {
+                      return  <ItemSection
+                          movieTitle={movie.title}
+                          src={'https://image.tmdb.org/t/p/w500'+movie.poster_path}
+                          movieDate={movie.release_date}
+                        />
+                      }
+                    })
+                  )}
             </Section>
 
+            <Section sectionTitle="Series más Populares ">
+              { loading === true ? (
+                  <div className="dimmer">
+                      <div className="loading">
+                          <i className="mdi mdi-loading" aria-hidden="true"></i>
+                      </div>
+                  </div>
+                  ) : (
+                    this.state.series.map((serie, i) => {
+                      if (i < 6) {
+                        return <ItemSection
+                          movieTitle={serie.original_name}
+                          src={'https://image.tmdb.org/t/p/w500'+serie.poster_path}
+                          movieDate={serie.first_air_date}
+                        />
+                      }
 
-          </div>
-        </div>
-      </main>
+                    })
+                  )}
+            </Section>
+            <Section sectionTitle="Mi lista ">
+              { loading === true ? (
+                  <div className="dimmer">
+                      <div className="loading">
+                          <i className="mdi mdi-loading" aria-hidden="true"></i>
+                      </div>
+                  </div>
+                  ) : (
+                    this.state.movies.map((movie, i) => {
+                      if (i < 6) {
+                      return  <ItemSection
+                          movieTitle={movie.title}
+                          src={'https://image.tmdb.org/t/p/w500'+movie.poster_path}
+                          movieDate={movie.release_date}
+                        />
+                      }
+                    })
+                  )}
+            </Section>
+        </GlobalContainer>
     )
   }
 }

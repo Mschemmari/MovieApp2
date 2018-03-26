@@ -7,7 +7,7 @@ const MenuNav = ({})=>(
           <Link className="nav-link" to='/'> Home </Link>
       </li>
       <li className="nav-item">
-          <a className="nav-link" href="peliculas-grid.html">Peliculas</a>
+          <Link className="nav-link" to='/peliculas'>Peliculas</Link>
       </li>
       <li className="nav-item">
           <a className="nav-link" href="series-grid.html">Series</a>

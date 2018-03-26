@@ -7,6 +7,7 @@ import {Switch, Route} from 'react-router-dom'
 import Header from './components/layout/navigation/header.js'
 import MenuNav from './components/layout/navigation/nav.js'
 import Home from './Views/home/index.js'
+import Peliculas from './Views/Peliculas/index.js'
 //components
 
 
@@ -21,7 +22,7 @@ class App extends Component {
         </Header>
           <Switch>
             <Route exact path='/' component={Home} />
-            {/* <Route path='/about' component={Peliculas} /> */}
+            <Route path='/peliculas' component={Peliculas} />
             {/* <Route path='/about' component={Series} /> */}
             {/* <Route path='/about' component={MiLista} /> */}
             {/* <Route component={NotFound} /> */}
