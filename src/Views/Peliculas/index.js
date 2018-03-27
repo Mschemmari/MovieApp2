@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import TheMovieDbApi from '../../TheMovieDbApi.js'
 import {Link} from 'react-router-dom'
+import {Switch, Route} from 'react-router-dom'
+
 //components
+import MovieBox from '../../components/movieBox/movieBox.js';
 import Select from '../../components/select/select.js'
 import ItemSection from '../../components/itemSection.js'
 import Section from '../section.js'
@@ -17,7 +20,8 @@ class Peliculas extends Component {
     this.state = {
       movies: [],
       years: [],
-      genreList: []
+      genreList: [],
+      active: false
     }
   }
   componentDidMount(){
@@ -29,21 +33,23 @@ class Peliculas extends Component {
     })
     this.api.getPopularMovies().then(res => {
       const movies = res.data.results
+      console.log(movies);
       this.setState({
         movies: movies
       })
     })
   }
+
   sortItem = (event)=>{
     const sort_by = event.target.value
+    const year = event.target.value
     this.setState({
       sort_by: event.target.value,
       itemsList: [],
       itemSelected: null,
     })
-    this.api.getDiscover(sort_by).then(res => {
+    this.api.getDiscover(sort_by, year).then(res => {
       const items = res.data.results
-      console.log(items, 'hola');
       this.setState({
         movies: items
       });
@@ -52,6 +58,13 @@ class Peliculas extends Component {
   sortByGenre = (e) =>{
 
   }
+
+ toggleView = () => {
+    this.setState({active : !this.state.active});
+  }
+  // toggleList() {
+  //   this.setState({active : true});
+  // }
   render() {
     const years = []
     let currentYear = new Date().getFullYear();
@@ -66,16 +79,16 @@ class Peliculas extends Component {
         <h1>Películas</h1>
         <div className="filters-bar">
             <div className="filters-bar-left">
-              <Select>
+              <Select handleChange={this.sortItem}>
                 {years.map((year, i) => (
                   <option key={i} value={year}>{year}</option>
                 ))}
               </Select>
                 <Select name="filter-sort" id="filter-sort" handleChange={this.sortItem}>
                   <option value="popo">Ordenar por</option>
-                  <option value="popularity.asc">Popularidad </option>
+                  <option value="popularity.desc">Popularidad </option>
                   <option value="original_title.asc">titulo</option>
-                  <option value="primary_release_date.asc">Fecha</option>
+                  <option value="primary_release_date.desc">Fecha</option>
                 </Select>
                 <Select name="filter-genre" id="filter-genre" handleChange={this.sortByGenre}>
                   {this.state.genreList.map((genre, i) => (
@@ -84,23 +97,39 @@ class Peliculas extends Component {
                 </Select>
             </div>
             <div className="filters-bar-right">
-                <a href="peliculas-grid.html" className="btn btn-light" aria-label="Profile">
+                <a onClick={this.toggleView} className={`btn btn-light ${this.state.active ? '' : 'active'}`}aria-label="Profile">
+
                     <i className="mdi mdi-view-grid" aria-hidden="true"></i>
                 </a>
-                <a href="peliculas-list.html" className="btn btn-light active" aria-label="Profile">
+
+                <a onClick={this.toggleView} className={`btn btn-light ${this.state.active ? 'active' : ''}`} aria-label="Profile">
                     <i className="mdi mdi-view-list" aria-hidden="true"></i>
                 </a>
             </div>
         </div>
         <Section>
+                {this.state.active  ?  (
+                  this.state.movies.map((movie, i) => (
+                    <MovieBox
+                      title={movie.title}
+                      key={i}
+                      src={movie.poster_path === null ? console.log('hola'): 'https://image.tmdb.org/t/p/w500'+movie.poster_path}
+                      overview={movie.overview}
+                    />
 
-                {this.state.movies.map(movie => (
-                  <ItemSection
-                    movieTitle={movie.title}
-                    src={'https://image.tmdb.org/t/p/w500'+movie.poster_path}
-                    movieDate={movie.release_date}
-                  />
-                ))}
+                  ))
+                ) : (
+                  this.state.movies.map((movie, i) => (
+                    <ItemSection
+                      key={i}
+                      movieTitle={movie.title}
+                      src={movie.poster_path === null ? console.log('hola') : 'https://image.tmdb.org/t/p/w500'+movie.poster_path}
+                      movieDate={movie.release_date}
+                    />
+                  ))
+                )
+
+                }
         </Section>
       </GlobalContainer>
     )

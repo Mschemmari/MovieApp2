@@ -8,7 +8,7 @@ const Img = ({src})=>(
 )
 
 Img.defaultProps = {
-  src: 'https://image.tmdb.org/t/p/w370_and_h556_bestv2/oSLd5GYGsiGgzDPKTwQh7wamO8t.jpg'
+  src: 'http://via.placeholder.com/180x270'
 }
 Img.propTypes = {
   src: PropTypes.string.isRequired

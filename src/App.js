@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
-import MovieBox from './components/movieBox/movieBox.js';
 import {Switch, Route} from 'react-router-dom'
 // views
 import Header from './components/layout/navigation/header.js'

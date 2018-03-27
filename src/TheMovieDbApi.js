@@ -18,10 +18,11 @@ class TheMovieDbApi {
        params: {page: page}
      })
   )
-  getDiscover = (sort_by) => (
+  getDiscover = (sort_by, year) => (
      this.axios.get(`/discover/movie`, {
        params: {
-         sort_by: sort_by
+         sort_by,
+         year
        }
      })
   )
