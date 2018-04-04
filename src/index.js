@@ -4,10 +4,26 @@ import './index.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import {BrowserRouter} from 'react-router-dom'
+import { createStore, applyMiddleware } from 'redux'
+import { Provider } from 'react-redux'
+import reducer from './reducers/reducer'
+import thunk from 'redux-thunk'
+import rootReducer from './rootReducer'
+import { composeWithDevTools } from 'redux-devtools-extension';
 
+const enhance = applyMiddleware(thunk)
+
+const store = createStore(
+  rootReducer,
+  // enhance
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+)
 ReactDOM.render(
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  , document.getElementById('root'));
+  <BrowserRouter>
+    <Provider store={store}>
+     <App />
+    </Provider>
+  </BrowserRouter>
+
+, document.getElementById('root'));
 registerServiceWorker();

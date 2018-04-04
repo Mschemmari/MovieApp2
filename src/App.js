@@ -5,7 +5,7 @@ import {Switch, Route} from 'react-router-dom'
 // views
 import Header from './components/layout/navigation/header.js'
 import MenuNav from './components/layout/navigation/nav.js'
-import Home from './Views/home/index.js'
+import Home from './containers/homeContainer.js'
 import Peliculas from './Views/Peliculas/index.js'
 //components
 
@@ -15,7 +15,7 @@ import Peliculas from './Views/Peliculas/index.js'
 class App extends Component {
   render() {
     return (
-      <div className="App">
+      <div className="App"> 
         <Header>
           <MenuNav/>
         </Header>

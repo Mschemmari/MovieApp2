@@ -21,7 +21,7 @@ class Peliculas extends Component {
       movies: [],
       years: [],
       genreList: [],
-      active: false
+      toggleGridList: false
     }
   }
   componentDidMount(){
@@ -40,31 +40,38 @@ class Peliculas extends Component {
     })
   }
 
-  sortItem = (event)=>{
-    const sort_by = event.target.value
+  sortByYear = (event)=>{
     const year = event.target.value
     this.setState({
-      sort_by: event.target.value,
+      years: event.target.value,
       itemsList: [],
       itemSelected: null,
     })
-    this.api.getDiscover(sort_by, year).then(res => {
+    this.api.getDiscover(year).then(res => {
       const items = res.data.results
       this.setState({
         movies: items
       });
     })
   }
-  sortByGenre = (e) =>{
-
+  sort_by = (event)=>{
+    const sort_by = event.target.value
+    this.setState({
+      sort_by: event.target.value,
+      itemsList: [],
+      itemSelected: null,
+    })
+    this.api.getDiscover(sort_by).then(res => {
+      const items = res.data.results
+      this.setState({
+        movies: items
+      });
+    })
   }
 
  toggleView = () => {
-    this.setState({active : !this.state.active});
+    this.setState({toggleGridList : !this.state.toggleGridList});
   }
-  // toggleList() {
-  //   this.setState({active : true});
-  // }
   render() {
     const years = []
     let currentYear = new Date().getFullYear();
@@ -79,15 +86,15 @@ class Peliculas extends Component {
         <h1>Películas</h1>
         <div className="filters-bar">
             <div className="filters-bar-left">
-              <Select handleChange={this.sortItem}>
+              <Select handleChange={this.sortByYear}>
                 {years.map((year, i) => (
                   <option key={i} value={year}>{year}</option>
                 ))}
               </Select>
-                <Select name="filter-sort" id="filter-sort" handleChange={this.sortItem}>
-                  <option value="popo">Ordenar por</option>
+                <Select name="filter-sort" id="filter-sort" handleChange={this.sort_by}>
+                  <option value="">Ordenar por</option>
                   <option value="popularity.desc">Popularidad </option>
-                  <option value="original_title.asc">titulo</option>
+                  <option value="original_title.desc">titulo</option>
                   <option value="primary_release_date.desc">Fecha</option>
                 </Select>
                 <Select name="filter-genre" id="filter-genre" handleChange={this.sortByGenre}>
@@ -97,18 +104,18 @@ class Peliculas extends Component {
                 </Select>
             </div>
             <div className="filters-bar-right">
-                <a onClick={this.toggleView} className={`btn btn-light ${this.state.active ? '' : 'active'}`}aria-label="Profile">
+                <a onClick={this.toggleView} className={`btn btn-light ${this.state.toggleGridList ? '' : 'active'}`}aria-label="Profile">
 
                     <i className="mdi mdi-view-grid" aria-hidden="true"></i>
                 </a>
 
-                <a onClick={this.toggleView} className={`btn btn-light ${this.state.active ? 'active' : ''}`} aria-label="Profile">
+                <a onClick={this.toggleView} className={`btn btn-light ${this.state.toggleGridList ? 'active' : ''}`} aria-label="Profile">
                     <i className="mdi mdi-view-list" aria-hidden="true"></i>
                 </a>
             </div>
         </div>
         <Section>
-                {this.state.active  ?  (
+                {this.state.toggleGridList  ?  (
                   this.state.movies.map((movie, i) => (
                     <MovieBox
                       title={movie.title}
