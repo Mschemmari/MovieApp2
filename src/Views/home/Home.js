@@ -18,7 +18,7 @@ const Home = ({ movies, loading}) =>
                 </div>
             </div>
             ) : (
-              this.props.movies.map( (movie, i) => {
+              movies.map( (movie, i) => {
                 if (i < 6) {
                 return
                 <ItemSection
@@ -60,7 +60,7 @@ const Home = ({ movies, loading}) =>
                 </div>
             </div>
             ) : (
-              this.props.movies.map((movie, i) => {
+              movies.map((movie, i) => {
                 if (i < 6) {
                 return
                 <ItemSection

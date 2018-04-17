@@ -5,7 +5,7 @@ import Axios from 'axios'
 
 
 const mapStateToProps = state => ({
-  movies: state.movies
+  movies: state.movies.movies
 })
 
 const categoriesSuccess = movies => ({
@@ -22,15 +22,23 @@ const categoriesFailed = error => ({
   error
 })
 
+
+
 const fetchCategories = () => dispatch => {
-    dispatch(categoriesFetched())
-  Axios.get('https://api.themoviedb.org/3/movie/popular?api_key=f259c936af962a17bb148cc941b8de9b&language=en-US&page=1').then(res =>
-    dispatch(categoriesSuccess(res.data.results))
+//  console.log(generoPeliculaID)
+  dispatch(categoriesFetched())
+  Axios.get('/movie/popular', { params: {
+      api_key: '8bd42374a45989a00cd13bc15ad622dd',
+      language: 'es-AR',
+  //    genres: generoPeliculaID,
+      page: 1
+    }
+  }).then(response =>
+    dispatch(categoriesSuccess(response.data.results))
   , err =>
     dispatch(categoriesFailed(err.message))
   )
 }
-
 export default compose(
   connect(mapStateToProps, { fetchCategories }),
   lifecycle({

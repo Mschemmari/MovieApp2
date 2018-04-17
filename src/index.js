@@ -15,8 +15,7 @@ const enhance = applyMiddleware(thunk)
 
 const store = createStore(
   rootReducer,
-  // enhance
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  composeWithDevTools(enhance)
 )
 ReactDOM.render(
   <BrowserRouter>
